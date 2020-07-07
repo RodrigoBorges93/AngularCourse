@@ -1,1 +1,17 @@
-<p>{{hero}}</p>
+<ul class="list-group mb-3">
+  <li
+  *ngFor= 'let hero of heroes'
+   class="list-group-item d-flex justify-content-between align-items-center"
+   (click)="onSelect(hero)"
+   [class.active]= "hero === selectedHero"
+   >
+    {{hero.name}}
+
+    <span class="badge badge-primary badge-pill">
+      {{hero.id}}
+    </span>
+  </li>
+</ul>
+
+<app-hero-detail [hero]="selectedHero"></app-hero-detail>
+

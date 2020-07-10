@@ -16,7 +16,8 @@ export class HeroService {
 
   private httpOptions = {
     headers: new HttpHeaders({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      Authorization: localStorage.getItem('token')
     })
   }
 
@@ -28,7 +29,7 @@ export class HeroService {
     ) { }
 
   getHeroes(): Observable<Hero[]> {
-    return this.http.get<Hero[]>(this.heroesUrl).pipe(
+    return this.http.get<Hero[]>(this.heroesUrl, this.httpOptions).pipe(
       tap(() => this.log('lista de heróis obtida.')),
       catchError(this.handleError<Hero[]>('getHeroes', []))
     )
@@ -37,7 +38,7 @@ export class HeroService {
   }
 
   getHero(id: number): Observable<Hero> {
-    return this.http.get<Hero>(`${this.heroesUrl}/${id}`).pipe(
+    return this.http.get<Hero>(`${this.heroesUrl}/${id}`, this.httpOptions).pipe(
       tap(() => this.log(`Obtido herói id=${id}`)),
       catchError(this.handleError<Hero>('getHero'))
     );
@@ -61,10 +62,25 @@ export class HeroService {
     );
   }
 
+  searchHeroes(term: string): Observable<Hero[]> {
+    if (!(term && term.trim())){
+      return of([]);
+    }
+    return this.http.get<Hero[]>(`${this.heroesUrl}/?name=${term}`, this.httpOptions).pipe(
+      tap((heroes) => {
+        heroes && heroes.length
+        ?
+        this.log(`Encontrado o termo ${term} e ${heroes.length} heróis`)
+        :
+        this.log(`Não encontrado nenhum valor com o termo ${term}`)
+      },
+      catchError(this.handleError<Hero[]>('getHeroes', [])))
+    )}
+
   deleteHero(hero: Hero): Observable<any>{
     const url = `${this.heroesUrl}/${hero.id}`;
 
-    return this.http.delete<Hero>(url).pipe(
+    return this.http.delete<Hero>(url, this.httpOptions).pipe(
       tap(() => this.log(`Deletado hero id=${hero.id}`)),
       catchError(this.handleError<Hero>('deleteHero'))
     );

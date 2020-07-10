@@ -14,4 +14,13 @@ export class AppComponent {
 
   ];
 
+  constructor(){
+    const token = localStorage.getItem('token');
+
+    if(!token) {
+      const randomToken = Math.random().toString(36).substring(-10);
+      localStorage.setItem('token', randomToken);
+    }
+  }
+
 }

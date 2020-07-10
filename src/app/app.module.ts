@@ -15,6 +15,8 @@ import { InMemoryDataService } from './in-memory-data.service';
 import { HeroAddComponent } from './hero-add/hero-add.component';
 import { SearchInputComponent } from './search-input/search-input.component';
 import { HeroFilterPipe } from './hero-filter.pipe';
+import { HeroSearchComponent } from './hero-search/hero-search.component';
+import { environment } from 'src/environments/environment';
 
 
 @NgModule({
@@ -27,7 +29,8 @@ import { HeroFilterPipe } from './hero-filter.pipe';
     DashboardComponent,
     HeroAddComponent,
     SearchInputComponent,
-    HeroFilterPipe
+    HeroFilterPipe,
+    HeroSearchComponent
   ],
   imports: [
     BrowserModule,
@@ -35,7 +38,8 @@ import { HeroFilterPipe } from './hero-filter.pipe';
     AppRoutingModule,
     NgbModule,
     HttpClientModule,
-    HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService)
+    environment.production
+    ? [] : HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService)
   ],
   providers: [],
   bootstrap: [AppComponent]

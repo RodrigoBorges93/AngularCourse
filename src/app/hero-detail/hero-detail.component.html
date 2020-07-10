@@ -1,3 +1,4 @@
+<button class="btn btn-secondary mb-3" (click)="goBack()"> Voltar </button>
 <div *ngIf="hero">
   <div class="card">
     <div class="card-body">
@@ -17,6 +18,11 @@
         [(ngModel)]=hero.name
         placeholder="Nome do herói"/>
       </div>
+      <button
+      class="btn btn-primary"
+      (click)="save()"
+      [disabled]="!hero.name.trim()"
+      > Salvar</button>
     </div>
   </div>
 </div>
